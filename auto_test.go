@@ -12,8 +12,8 @@ import (
 
 func Test_service_GetCategories(t *testing.T) {
 	type fields struct {
-		apikey     string
 		client     *http.Client
+		apikey     string
 		maxRetries int
 	}
 	tests := []struct {
@@ -75,15 +75,15 @@ func Test_service_GetCategories(t *testing.T) {
 
 func Test_service_GetBodyStyles(t *testing.T) {
 	type fields struct {
-		apikey     string
 		client     *http.Client
+		apikey     string
 		maxRetries int
 	}
 	tests := []struct {
-		name     string
-		parentID int
 		fields   fields
+		name     string
 		want     []BaseWithParentID
+		parentID int
 		wantErr  bool
 	}{
 		{
@@ -154,17 +154,16 @@ func Test_service_GetBodyStyles(t *testing.T) {
 
 func Test_service_GetBodyStylesGroups(t *testing.T) {
 	type fields struct {
-		apikey string
-		client *http.Client
-
+		client     *http.Client
+		apikey     string
 		maxRetries int
 		debug      bool
 	}
 	tests := []struct {
 		name     string
-		parentID int
 		fields   fields
 		want     [][]BaseWithParentID
+		parentID int
 		wantErr  bool
 	}{
 		{
@@ -318,8 +317,8 @@ func Test_service_GetBodyStylesGroups(t *testing.T) {
 
 func Test_service_GetMarksByCategory(t *testing.T) {
 	type fields struct {
-		apikey     string
 		client     *http.Client
+		apikey     string
 		maxRetries int
 		debug      bool
 	}
@@ -327,11 +326,11 @@ func Test_service_GetMarksByCategory(t *testing.T) {
 		categoryID int
 	}
 	tests := []struct {
+		wantErr assert.ErrorAssertionFunc
 		name    string
 		fields  fields
-		args    args
 		want    Marks
-		wantErr assert.ErrorAssertionFunc
+		args    args
 	}{
 		{
 			name: "Get marks by category cars",
@@ -408,9 +407,8 @@ func Test_service_GetMarksByCategory(t *testing.T) {
 
 func Test_service_GetModelsByCategoryAndMarkID(t *testing.T) {
 	type fields struct {
-		apikey string
-		client *http.Client
-
+		client     *http.Client
+		apikey     string
 		maxRetries int
 		debug      bool
 	}
@@ -419,11 +417,11 @@ func Test_service_GetModelsByCategoryAndMarkID(t *testing.T) {
 		markID     int
 	}
 	tests := []struct {
+		wantErr assert.ErrorAssertionFunc
 		name    string
 		fields  fields
-		args    args
 		want    Models
-		wantErr assert.ErrorAssertionFunc
+		args    args
 	}{
 		{
 			name: "Get models by category and mark success",
@@ -491,9 +489,8 @@ func Test_service_GetModelsByCategoryAndMarkID(t *testing.T) {
 
 func Test_service_GetModelsByCategoryAndMarkIDWithGroups(t *testing.T) {
 	type fields struct {
-		apikey string
-		client *http.Client
-
+		client     *http.Client
+		apikey     string
 		maxRetries int
 		debug      bool
 	}
@@ -502,11 +499,11 @@ func Test_service_GetModelsByCategoryAndMarkIDWithGroups(t *testing.T) {
 		markID     int
 	}
 	tests := []struct {
+		wantErr assert.ErrorAssertionFunc
 		name    string
 		fields  fields
-		args    args
 		want    Models
-		wantErr assert.ErrorAssertionFunc
+		args    args
 	}{
 		{
 			name: "Get models by category and mark success AUDI",
@@ -589,9 +586,8 @@ func Test_service_GetModelsByCategoryAndMarkIDWithGroups(t *testing.T) {
 
 func Test_service_GetGenerationsByModelID(t *testing.T) {
 	type fields struct {
-		apikey string
-		client *http.Client
-
+		client     *http.Client
+		apikey     string
 		maxRetries int
 		debug      bool
 	}
@@ -599,11 +595,11 @@ func Test_service_GetGenerationsByModelID(t *testing.T) {
 		modelID int
 	}
 	tests := []struct {
+		wantErr assert.ErrorAssertionFunc
 		name    string
 		fields  fields
-		args    args
 		want    []Generations
-		wantErr assert.ErrorAssertionFunc
+		args    args
 	}{
 		{
 			name: "GetGenerationsByModelID success",
@@ -669,9 +665,8 @@ func Test_service_GetGenerationsByModelID(t *testing.T) {
 
 func Test_service_GetModificationsByGenerationID(t *testing.T) {
 	type fields struct {
-		apikey string
-		client *http.Client
-
+		client     *http.Client
+		apikey     string
 		maxRetries int
 		debug      bool
 	}
@@ -679,11 +674,11 @@ func Test_service_GetModificationsByGenerationID(t *testing.T) {
 		generationID int
 	}
 	tests := []struct {
+		wantErr assert.ErrorAssertionFunc
 		name    string
 		fields  fields
-		args    args
 		want    Modifications
-		wantErr assert.ErrorAssertionFunc
+		args    args
 	}{
 		{
 			name: "GetModificationsByGenerationID success",
@@ -734,9 +729,8 @@ func Test_service_GetModificationsByGenerationID(t *testing.T) {
 
 func Test_service_GetDriverTypes(t *testing.T) {
 	type fields struct {
-		apikey string
-		client *http.Client
-
+		client     *http.Client
+		apikey     string
 		maxRetries int
 		debug      bool
 	}
@@ -744,11 +738,11 @@ func Test_service_GetDriverTypes(t *testing.T) {
 		categoryID int
 	}
 	tests := []struct {
+		wantErr assert.ErrorAssertionFunc
 		name    string
 		fields  fields
-		args    args
 		want    DriverTypes
-		wantErr assert.ErrorAssertionFunc
+		args    args
 	}{
 		{
 			name: "GetDriverTypes success",
@@ -785,17 +779,16 @@ func Test_service_GetDriverTypes(t *testing.T) {
 
 func Test_service_GetFuelTypes(t *testing.T) {
 	type fields struct {
-		apikey string
-		client *http.Client
-
+		client     *http.Client
+		apikey     string
 		maxRetries int
 		debug      bool
 	}
 	tests := []struct {
+		wantErr assert.ErrorAssertionFunc
 		name    string
 		fields  fields
 		want    FuelTypes
-		wantErr assert.ErrorAssertionFunc
 	}{
 		{
 			name: "GetFuelTypes success",
@@ -829,9 +822,8 @@ func Test_service_GetFuelTypes(t *testing.T) {
 
 func Test_service_GetGearboxTypes(t *testing.T) {
 	type fields struct {
-		apikey string
-		client *http.Client
-
+		client     *http.Client
+		apikey     string
 		maxRetries int
 		debug      bool
 	}
@@ -839,11 +831,11 @@ func Test_service_GetGearboxTypes(t *testing.T) {
 		categoryID int
 	}
 	tests := []struct {
+		wantErr assert.ErrorAssertionFunc
 		name    string
 		fields  fields
-		args    args
 		want    GearboxesTypes
-		wantErr assert.ErrorAssertionFunc
+		args    args
 	}{
 		{
 			name: "GetGearboxTypes success",
@@ -880,9 +872,8 @@ func Test_service_GetGearboxTypes(t *testing.T) {
 
 func Test_service_GetOptions(t *testing.T) {
 	type fields struct {
-		apikey string
-		client *http.Client
-
+		client     *http.Client
+		apikey     string
 		maxRetries int
 		debug      bool
 	}
@@ -890,11 +881,11 @@ func Test_service_GetOptions(t *testing.T) {
 		categoryID int
 	}
 	tests := []struct {
+		wantErr assert.ErrorAssertionFunc
 		name    string
 		fields  fields
-		args    args
 		want    OptionTypes
-		wantErr assert.ErrorAssertionFunc
+		args    args
 	}{
 		{
 			name: "GetOptions success",
@@ -931,17 +922,16 @@ func Test_service_GetOptions(t *testing.T) {
 
 func Test_service_GetColors(t *testing.T) {
 	type fields struct {
-		apikey string
-		client *http.Client
-
+		client     *http.Client
+		apikey     string
 		maxRetries int
 		debug      bool
 	}
 	tests := []struct {
+		wantErr assert.ErrorAssertionFunc
 		name    string
 		fields  fields
 		want    ColorTypes
-		wantErr assert.ErrorAssertionFunc
 	}{
 		{
 			name: "GetColors success",

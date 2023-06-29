@@ -69,16 +69,16 @@ func (e RestError) Error() string {
 }
 
 type Generation struct {
-	GenerationId int    `json:"generationId"`
 	Name         string `json:"name"`
+	Eng          string `json:"eng"`
+	GenerationId int    `json:"generationId"`
 	YearFrom     int    `json:"yearFrom"`
 	YearTo       int    `json:"yearTo"`
 	ModelId      int    `json:"modelId"`
-	Eng          string `json:"eng"`
 }
 
 type Generations struct {
-	ID          int          `json:"id"`
 	Name        string       `json:"name"`
 	Generations []Generation `json:"generations"`
+	ID          int          `json:"id"`
 }

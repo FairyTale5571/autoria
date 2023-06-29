@@ -18,8 +18,8 @@ type Provider interface {
 }
 
 type service struct {
-	apikey     string
 	client     *http.Client
+	apikey     string
 	maxRetries int
 	debug      bool
 }

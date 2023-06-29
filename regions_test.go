@@ -11,9 +11,8 @@ import (
 
 func Test_service_GetCities(t *testing.T) {
 	type fields struct {
-		apikey string
-		client *http.Client
-
+		client     *http.Client
+		apikey     string
 		maxRetries int
 		debug      bool
 	}
@@ -21,11 +20,11 @@ func Test_service_GetCities(t *testing.T) {
 		stateID int
 	}
 	tests := []struct {
+		wantErr assert.ErrorAssertionFunc
 		name    string
 		fields  fields
-		args    args
 		want    States
-		wantErr assert.ErrorAssertionFunc
+		args    args
 	}{
 		{
 			name: "GetCities Vinytsa state",
@@ -107,17 +106,16 @@ func Test_service_GetCities(t *testing.T) {
 
 func Test_service_GetStates(t *testing.T) {
 	type fields struct {
-		apikey string
-		client *http.Client
-
+		client     *http.Client
+		apikey     string
 		maxRetries int
 		debug      bool
 	}
 	tests := []struct {
+		wantErr assert.ErrorAssertionFunc
 		name    string
 		fields  fields
 		want    States
-		wantErr assert.ErrorAssertionFunc
 	}{
 		{
 			name: "GetStates",
@@ -187,17 +185,16 @@ func Test_service_GetStates(t *testing.T) {
 
 func Test_service_GetCountries(t *testing.T) {
 	type fields struct {
-		apikey string
-		client *http.Client
-
+		client     *http.Client
+		apikey     string
 		maxRetries int
 		debug      bool
 	}
 	tests := []struct {
+		wantErr assert.ErrorAssertionFunc
 		name    string
 		fields  fields
 		want    CountryTypes
-		wantErr assert.ErrorAssertionFunc
 	}{
 		{
 			name: "GetCountries",
