@@ -1,8 +1,8 @@
 # Go AutoRIA
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/bwmarrin/discordgo.svg)](https://pkg.go.dev/github.com/bwmarrin/discordgo) 
-[![Go Report Card](https://goreportcard.com/badge/github.com/bwmarrin/discordgo)](https://goreportcard.com/report/github.com/bwmarrin/discordgo) 
-[![CI](https://github.com/bwmarrin/discordgo/actions/workflows/ci.yml/badge.svg)](https://github.com/bwmarrin/discordgo/actions/workflows/ci.yml)
+[//]: # ([![Go Reference]&#40;https://pkg.go.dev/badge/github.com/bwmarrin/discordgo.svg&#41;]&#40;https://pkg.go.dev/github.com/bwmarrin/discordgo&#41; )
+[//]: # ([![Go Report Card]&#40;https://goreportcard.com/badge/github.com/bwmarrin/discordgo&#41;]&#40;https://goreportcard.com/report/github.com/bwmarrin/discordgo&#41; )
+[//]: # ([![CI]&#40;https://github.com/bwmarrin/discordgo/actions/workflows/ci.yml/badge.svg&#41;]&#40;https://github.com/bwmarrin/discordgo/actions/workflows/ci.yml&#41;)
 
 
 ## Бібліотека для використання api auto.ria.com
@@ -40,3 +40,23 @@ func main() {
 }
 
 ```
+
+### TODO:
+
+ - [x] Типи транспорту
+ - [x] Типи кузова
+ - [x] Марки
+ - [x] Моделі
+ - [x] Покоління
+ - [x] Модифікації
+ - [x] Області
+ - [x] Міста
+ - [x] Типи приводу
+ - [x] Типи палива
+ - [x] Коробки передач
+ - [x] Опції
+ - [x] Кольори
+ - [x] Країна виробник
+ - [ ] Пошук оголошень
+ - [ ] Підрахунок середньої ціни
+ - [ ] Інформація по id оголошення
