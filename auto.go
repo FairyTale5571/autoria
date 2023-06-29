@@ -164,7 +164,7 @@ func (s *service) GetDriverTypes(categoryID int) (DriverTypes, error) {
 // Типи палива
 func (s *service) GetFuelTypes() (FuelTypes, error) {
 	var fuelTypes FuelTypes
-	if err := s.request(http.MethodGet, fmt.Sprintf("/auto/type"), nil, nil, &fuelTypes); err != nil {
+	if err := s.request(http.MethodGet, "/auto/type", nil, nil, &fuelTypes); err != nil {
 		return nil, err
 	}
 	return fuelTypes, nil
@@ -194,7 +194,7 @@ func (s *service) GetOptions(categoryID int) (OptionTypes, error) {
 // Кольори
 func (s *service) GetColors() (ColorTypes, error) {
 	var colors ColorTypes
-	if err := s.request(http.MethodGet, fmt.Sprintf("/auto/colors"), nil, nil, &colors); err != nil {
+	if err := s.request(http.MethodGet, "/auto/colors", nil, nil, &colors); err != nil {
 		return nil, err
 	}
 	return colors, nil

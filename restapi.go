@@ -14,9 +14,6 @@ const (
 )
 
 func (s *service) request(method, path string, params map[string]string, body, response any) error {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-
 	var buf io.ReadWriter
 	if body != nil {
 		buf = new(bytes.Buffer)

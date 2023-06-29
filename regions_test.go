@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"sync"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -12,9 +11,9 @@ import (
 
 func Test_service_GetCities(t *testing.T) {
 	type fields struct {
-		apikey     string
-		client     *http.Client
-		mutex      sync.Mutex
+		apikey string
+		client *http.Client
+
 		maxRetries int
 		debug      bool
 	}
@@ -31,9 +30,9 @@ func Test_service_GetCities(t *testing.T) {
 		{
 			name: "GetCities Vinytsa state",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     http.DefaultClient,
-				mutex:      sync.Mutex{},
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: http.DefaultClient,
+
 				maxRetries: 0,
 			},
 			args: args{
@@ -76,9 +75,9 @@ func Test_service_GetCities(t *testing.T) {
 		{
 			name: "GetCities error",
 			fields: fields{
-				apikey:     "123",
-				client:     http.DefaultClient,
-				mutex:      sync.Mutex{},
+				apikey: "123",
+				client: http.DefaultClient,
+
 				maxRetries: 0,
 			},
 			args: args{
@@ -91,9 +90,9 @@ func Test_service_GetCities(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			s := &service{
-				apikey:     tt.fields.apikey,
-				client:     tt.fields.client,
-				mutex:      tt.fields.mutex,
+				apikey: tt.fields.apikey,
+				client: tt.fields.client,
+
 				maxRetries: tt.fields.maxRetries,
 				debug:      tt.fields.debug,
 			}
@@ -108,9 +107,9 @@ func Test_service_GetCities(t *testing.T) {
 
 func Test_service_GetStates(t *testing.T) {
 	type fields struct {
-		apikey     string
-		client     *http.Client
-		mutex      sync.Mutex
+		apikey string
+		client *http.Client
+
 		maxRetries int
 		debug      bool
 	}
@@ -123,9 +122,9 @@ func Test_service_GetStates(t *testing.T) {
 		{
 			name: "GetStates",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     http.DefaultClient,
-				mutex:      sync.Mutex{},
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: http.DefaultClient,
+
 				maxRetries: 0,
 			},
 			want: States{
@@ -159,9 +158,9 @@ func Test_service_GetStates(t *testing.T) {
 		{
 			name: "GetStates error",
 			fields: fields{
-				apikey:     "123",
-				client:     http.DefaultClient,
-				mutex:      sync.Mutex{},
+				apikey: "123",
+				client: http.DefaultClient,
+
 				maxRetries: 0,
 			},
 			want:    nil,
@@ -171,14 +170,14 @@ func Test_service_GetStates(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			s := &service{
-				apikey:     tt.fields.apikey,
-				client:     tt.fields.client,
-				mutex:      tt.fields.mutex,
+				apikey: tt.fields.apikey,
+				client: tt.fields.client,
+
 				maxRetries: tt.fields.maxRetries,
 				debug:      tt.fields.debug,
 			}
 			got, err := s.GetStates()
-			if !tt.wantErr(t, err, fmt.Sprintf("GetStates()")) {
+			if !tt.wantErr(t, err, "GetStates()") {
 				return
 			}
 			assert.Equalf(t, tt.want, got, "GetStates()")
@@ -188,9 +187,9 @@ func Test_service_GetStates(t *testing.T) {
 
 func Test_service_GetCountries(t *testing.T) {
 	type fields struct {
-		apikey     string
-		client     *http.Client
-		mutex      sync.Mutex
+		apikey string
+		client *http.Client
+
 		maxRetries int
 		debug      bool
 	}
@@ -203,9 +202,9 @@ func Test_service_GetCountries(t *testing.T) {
 		{
 			name: "GetCountries",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     http.DefaultClient,
-				mutex:      sync.Mutex{},
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: http.DefaultClient,
+
 				maxRetries: 0,
 			},
 			want:    CountryTypes{},
@@ -215,14 +214,14 @@ func Test_service_GetCountries(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			s := &service{
-				apikey:     tt.fields.apikey,
-				client:     tt.fields.client,
-				mutex:      tt.fields.mutex,
+				apikey: tt.fields.apikey,
+				client: tt.fields.client,
+
 				maxRetries: tt.fields.maxRetries,
 				debug:      tt.fields.debug,
 			}
 			got, err := s.GetCountries()
-			if !tt.wantErr(t, err, fmt.Sprintf("GetCountries()")) {
+			if !tt.wantErr(t, err, "GetCountries()") {
 				return
 			}
 			assert.Equalf(t, tt.want, got, "GetCountries()")

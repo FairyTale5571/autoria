@@ -2,7 +2,6 @@ package autoria
 
 import (
 	"net/http"
-	"sync"
 	"time"
 )
 
@@ -21,7 +20,6 @@ type Provider interface {
 type service struct {
 	apikey     string
 	client     *http.Client
-	mutex      sync.Mutex
 	maxRetries int
 	debug      bool
 }
@@ -39,7 +37,6 @@ func New(opts Opts) Provider {
 		client: &http.Client{
 			Timeout: opts.Timeout,
 		},
-		mutex:      sync.Mutex{},
 		maxRetries: opts.MaxRetries,
 		debug:      opts.Debug,
 	}

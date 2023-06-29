@@ -2,19 +2,18 @@ package autoria
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"net/http"
 	"os"
-	"sync"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func Test_service_GetCategories(t *testing.T) {
 	type fields struct {
 		apikey     string
 		client     *http.Client
-		mutex      sync.Mutex
 		maxRetries int
 	}
 	tests := []struct {
@@ -28,7 +27,6 @@ func Test_service_GetCategories(t *testing.T) {
 			fields: fields{
 				apikey:     os.Getenv("AUTORIA_API_KEY"),
 				client:     &http.Client{},
-				mutex:      sync.Mutex{},
 				maxRetries: 0,
 			},
 			wantErr: false,
@@ -50,7 +48,6 @@ func Test_service_GetCategories(t *testing.T) {
 			fields: fields{
 				apikey:     "123",
 				client:     &http.Client{},
-				mutex:      sync.Mutex{},
 				maxRetries: 0,
 			},
 			wantErr: true,
@@ -61,7 +58,6 @@ func Test_service_GetCategories(t *testing.T) {
 			s := &service{
 				apikey:     tt.fields.apikey,
 				client:     tt.fields.client,
-				mutex:      tt.fields.mutex,
 				maxRetries: tt.fields.maxRetries,
 			}
 			got, err := s.GetCategories()
@@ -81,10 +77,9 @@ func Test_service_GetBodyStyles(t *testing.T) {
 	type fields struct {
 		apikey     string
 		client     *http.Client
-		mutex      sync.Mutex
 		maxRetries int
 	}
-	var tests = []struct {
+	tests := []struct {
 		name     string
 		parentID int
 		fields   fields
@@ -96,7 +91,6 @@ func Test_service_GetBodyStyles(t *testing.T) {
 			fields: fields{
 				apikey:     os.Getenv("AUTORIA_API_KEY"),
 				client:     &http.Client{},
-				mutex:      sync.Mutex{},
 				maxRetries: 0,
 			},
 			want: []BaseWithParentID{
@@ -122,7 +116,6 @@ func Test_service_GetBodyStyles(t *testing.T) {
 			fields: fields{
 				apikey:     os.Getenv("AUTORIA_API_KEY"),
 				client:     &http.Client{},
-				mutex:      sync.Mutex{},
 				maxRetries: 0,
 			},
 			want:     []BaseWithParentID{},
@@ -134,7 +127,6 @@ func Test_service_GetBodyStyles(t *testing.T) {
 			fields: fields{
 				apikey:     "123123123",
 				client:     &http.Client{},
-				mutex:      sync.Mutex{},
 				maxRetries: 0,
 			},
 			wantErr: true,
@@ -145,7 +137,6 @@ func Test_service_GetBodyStyles(t *testing.T) {
 			s := &service{
 				apikey:     tt.fields.apikey,
 				client:     tt.fields.client,
-				mutex:      tt.fields.mutex,
 				maxRetries: tt.fields.maxRetries,
 			}
 			got, err := s.GetBodyStyles(tt.parentID)
@@ -163,13 +154,13 @@ func Test_service_GetBodyStyles(t *testing.T) {
 
 func Test_service_GetBodyStylesGroups(t *testing.T) {
 	type fields struct {
-		apikey     string
-		client     *http.Client
-		mutex      sync.Mutex
+		apikey string
+		client *http.Client
+
 		maxRetries int
 		debug      bool
 	}
-	var tests = []struct {
+	tests := []struct {
 		name     string
 		parentID int
 		fields   fields
@@ -179,9 +170,9 @@ func Test_service_GetBodyStylesGroups(t *testing.T) {
 		{
 			name: "Get Body styles successfully for parentID 1",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     &http.Client{},
-				mutex:      sync.Mutex{},
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: &http.Client{},
+
 				maxRetries: 0,
 				debug:      true,
 			},
@@ -206,34 +197,43 @@ func Test_service_GetBodyStylesGroups(t *testing.T) {
 		{
 			name: "Get Body styles successfully for parentID 2",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     &http.Client{},
-				mutex:      sync.Mutex{},
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: &http.Client{},
+
 				maxRetries: 0,
 				debug:      true,
 			},
 			want: [][]BaseWithParentID{
-				{BaseWithParentID{Base: Base{Name: "Інше", Value: 56}, ParentID: 0},
-					BaseWithParentID{Base: Base{Name: "Вантажні моторолери, мотоцикли, скутери, мопеди", Value: 429}, ParentID: 0}},
-				{BaseWithParentID{Base: Base{Name: "Квадроцикли", Value: 35}, ParentID: 0},
+				{
+					BaseWithParentID{Base: Base{Name: "Інше", Value: 56}, ParentID: 0},
+					BaseWithParentID{Base: Base{Name: "Вантажні моторолери, мотоцикли, скутери, мопеди", Value: 429}, ParentID: 0},
+				},
+				{
+					BaseWithParentID{Base: Base{Name: "Квадроцикли", Value: 35}, ParentID: 0},
 					BaseWithParentID{Base: Base{Name: "Всюдихід-амфібія", Value: 43}, ParentID: 0},
 					BaseWithParentID{Base: Base{Name: "Гольф-кар", Value: 44}, ParentID: 0},
 					BaseWithParentID{Base: Base{Name: "Картинг", Value: 45}, ParentID: 0},
 					BaseWithParentID{Base: Base{Name: "Квадроцикл дитячий", Value: 36}, ParentID: 0},
 					BaseWithParentID{Base: Base{Name: "Квадроцикл спортивний", Value: 39}, ParentID: 0},
 					BaseWithParentID{Base: Base{Name: "Квадроцикл утилітарний", Value: 41}, ParentID: 0},
-					BaseWithParentID{Base: Base{Name: "Мотовсюдиход", Value: 42}, ParentID: 0}},
-				{BaseWithParentID{Base: Base{Name: "Міні мотоцикли", Value: 31}, ParentID: 0},
+					BaseWithParentID{Base: Base{Name: "Мотовсюдиход", Value: 42}, ParentID: 0},
+				},
+				{
+					BaseWithParentID{Base: Base{Name: "Міні мотоцикли", Value: 31}, ParentID: 0},
 					BaseWithParentID{Base: Base{Name: "Міні спорт", Value: 32}, ParentID: 0},
-					BaseWithParentID{Base: Base{Name: "Пітбайк", Value: 33}, ParentID: 0}},
-				{BaseWithParentID{Base: Base{Name: "Мопеди", Value: 58}, ParentID: 0},
+					BaseWithParentID{Base: Base{Name: "Пітбайк", Value: 33}, ParentID: 0},
+				},
+				{
+					BaseWithParentID{Base: Base{Name: "Мопеди", Value: 58}, ParentID: 0},
 					BaseWithParentID{Base: Base{Name: "Максі-скутер", Value: 12}, ParentID: 0},
 					BaseWithParentID{Base: Base{Name: "Мокик", Value: 427}, ParentID: 0},
 					BaseWithParentID{Base: Base{Name: "Скутер / Мотороллер", Value: 11}, ParentID: 0},
 					BaseWithParentID{Base: Base{Name: "Скутер для інвалідів", Value: 426}, ParentID: 0},
 					BaseWithParentID{Base: Base{Name: "Скутер ретро", Value: 425}, ParentID: 0},
-					BaseWithParentID{Base: Base{Name: "Скутери з кабіною", Value: 430}, ParentID: 0}},
-				{BaseWithParentID{Base: Base{Name: "Мотоцикли", Value: 13}, ParentID: 0},
+					BaseWithParentID{Base: Base{Name: "Скутери з кабіною", Value: 430}, ParentID: 0},
+				},
+				{
+					BaseWithParentID{Base: Base{Name: "Мотоцикли", Value: 13}, ParentID: 0},
 					BaseWithParentID{Base: Base{Name: "Боббер", Value: 421}, ParentID: 0},
 					BaseWithParentID{Base: Base{Name: "Кафе рейсер", Value: 423}, ParentID: 0},
 					BaseWithParentID{Base: Base{Name: "Мотоцикл Багатоцільовий (All-round)", Value: 25}, ParentID: 0},
@@ -250,18 +250,23 @@ func Test_service_GetBodyStylesGroups(t *testing.T) {
 					BaseWithParentID{Base: Base{Name: "Мотоцикл Туризм", Value: 16}, ParentID: 0},
 					BaseWithParentID{Base: Base{Name: "Мотоцикл Чоппер", Value: 23}, ParentID: 0},
 					BaseWithParentID{Base: Base{Name: "Скремблер", Value: 422}, ParentID: 0},
-					BaseWithParentID{Base: Base{Name: "Спортбайк", Value: 18}, ParentID: 0}},
-				{BaseWithParentID{Base: Base{Name: "Снігохід", Value: 46}, ParentID: 0},
+					BaseWithParentID{Base: Base{Name: "Спортбайк", Value: 18}, ParentID: 0},
+				},
+				{
+					BaseWithParentID{Base: Base{Name: "Снігохід", Value: 46}, ParentID: 0},
 					BaseWithParentID{Base: Base{Name: "Гірські снігоходи", Value: 434}, ParentID: 0},
 					BaseWithParentID{Base: Base{Name: "Міні-розбірні снігоходи", Value: 432}, ParentID: 0},
 					BaseWithParentID{Base: Base{Name: "Мотобуксир", Value: 424}, ParentID: 0},
 					BaseWithParentID{Base: Base{Name: "Снігомопеди та снігоскутери", Value: 436}, ParentID: 0},
 					BaseWithParentID{Base: Base{Name: "Снігоходи для пполювання та рибалки", Value: 433}, ParentID: 0},
 					BaseWithParentID{Base: Base{Name: "Спортивні снігоходи", Value: 435}, ParentID: 0},
-					BaseWithParentID{Base: Base{Name: "Утилітарні снігоходи", Value: 431}, ParentID: 0}},
+					BaseWithParentID{Base: Base{Name: "Утилітарні снігоходи", Value: 431}, ParentID: 0},
+				},
 				{BaseWithParentID{Base: Base{Name: "Трайк", Value: 57}, ParentID: 0}},
-				{BaseWithParentID{Base: Base{Name: "Трицикл", Value: 34}, ParentID: 0},
-					BaseWithParentID{Base: Base{Name: "Вантажні трицикли", Value: 428}, ParentID: 0}},
+				{
+					BaseWithParentID{Base: Base{Name: "Трицикл", Value: 34}, ParentID: 0},
+					BaseWithParentID{Base: Base{Name: "Вантажні трицикли", Value: 428}, ParentID: 0},
+				},
 			},
 			parentID: CategoryMoto,
 			wantErr:  false,
@@ -269,9 +274,9 @@ func Test_service_GetBodyStylesGroups(t *testing.T) {
 		{
 			name: "Unknown parentID",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     &http.Client{},
-				mutex:      sync.Mutex{},
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: &http.Client{},
+
 				maxRetries: 0,
 			},
 			want:     [][]BaseWithParentID(nil),
@@ -281,9 +286,9 @@ func Test_service_GetBodyStylesGroups(t *testing.T) {
 		{
 			name: "Get Body groups styles fail",
 			fields: fields{
-				apikey:     "123123123",
-				client:     &http.Client{},
-				mutex:      sync.Mutex{},
+				apikey: "123123123",
+				client: &http.Client{},
+
 				maxRetries: 0,
 			},
 			wantErr: true,
@@ -292,9 +297,9 @@ func Test_service_GetBodyStylesGroups(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			s := &service{
-				apikey:     tt.fields.apikey,
-				client:     tt.fields.client,
-				mutex:      tt.fields.mutex,
+				apikey: tt.fields.apikey,
+				client: tt.fields.client,
+
 				maxRetries: tt.fields.maxRetries,
 				debug:      tt.fields.debug,
 			}
@@ -315,7 +320,6 @@ func Test_service_GetMarksByCategory(t *testing.T) {
 	type fields struct {
 		apikey     string
 		client     *http.Client
-		mutex      sync.Mutex
 		maxRetries int
 		debug      bool
 	}
@@ -334,7 +338,6 @@ func Test_service_GetMarksByCategory(t *testing.T) {
 			fields: fields{
 				apikey:     os.Getenv("AUTORIA_API_KEY"),
 				client:     &http.Client{},
-				mutex:      sync.Mutex{},
 				maxRetries: 0,
 			},
 			args: args{
@@ -346,9 +349,9 @@ func Test_service_GetMarksByCategory(t *testing.T) {
 		{
 			name: "Get marks by category moto",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     &http.Client{},
-				mutex:      sync.Mutex{},
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: &http.Client{},
+
 				maxRetries: 0,
 			},
 			args: args{
@@ -360,9 +363,9 @@ func Test_service_GetMarksByCategory(t *testing.T) {
 		{
 			name: "Get marks with invalid category",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     &http.Client{},
-				mutex:      sync.Mutex{},
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: &http.Client{},
+
 				maxRetries: 0,
 			},
 			args: args{
@@ -374,9 +377,9 @@ func Test_service_GetMarksByCategory(t *testing.T) {
 		{
 			name: "Get marks by category fail",
 			fields: fields{
-				apikey:     "123123123",
-				client:     &http.Client{},
-				mutex:      sync.Mutex{},
+				apikey: "123123123",
+				client: &http.Client{},
+
 				maxRetries: 0,
 			},
 			args: args{
@@ -391,7 +394,6 @@ func Test_service_GetMarksByCategory(t *testing.T) {
 			s := &service{
 				apikey:     tt.fields.apikey,
 				client:     tt.fields.client,
-				mutex:      tt.fields.mutex,
 				maxRetries: tt.fields.maxRetries,
 				debug:      tt.fields.debug,
 			}
@@ -406,9 +408,9 @@ func Test_service_GetMarksByCategory(t *testing.T) {
 
 func Test_service_GetModelsByCategoryAndMarkID(t *testing.T) {
 	type fields struct {
-		apikey     string
-		client     *http.Client
-		mutex      sync.Mutex
+		apikey string
+		client *http.Client
+
 		maxRetries int
 		debug      bool
 	}
@@ -426,9 +428,9 @@ func Test_service_GetModelsByCategoryAndMarkID(t *testing.T) {
 		{
 			name: "Get models by category and mark success",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     &http.Client{},
-				mutex:      sync.Mutex{},
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: &http.Client{},
+
 				maxRetries: 0,
 			},
 			args: args{
@@ -441,9 +443,9 @@ func Test_service_GetModelsByCategoryAndMarkID(t *testing.T) {
 		{
 			name: "Get models with invalid mark",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     &http.Client{},
-				mutex:      sync.Mutex{},
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: &http.Client{},
+
 				maxRetries: 0,
 			},
 			args: args{
@@ -456,9 +458,9 @@ func Test_service_GetModelsByCategoryAndMarkID(t *testing.T) {
 		{
 			name: "Get models by category and mark fail",
 			fields: fields{
-				apikey:     "123123123",
-				client:     &http.Client{},
-				mutex:      sync.Mutex{},
+				apikey: "123123123",
+				client: &http.Client{},
+
 				maxRetries: 0,
 			},
 			args: args{
@@ -472,9 +474,9 @@ func Test_service_GetModelsByCategoryAndMarkID(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			s := &service{
-				apikey:     tt.fields.apikey,
-				client:     tt.fields.client,
-				mutex:      tt.fields.mutex,
+				apikey: tt.fields.apikey,
+				client: tt.fields.client,
+
 				maxRetries: tt.fields.maxRetries,
 				debug:      tt.fields.debug,
 			}
@@ -489,9 +491,9 @@ func Test_service_GetModelsByCategoryAndMarkID(t *testing.T) {
 
 func Test_service_GetModelsByCategoryAndMarkIDWithGroups(t *testing.T) {
 	type fields struct {
-		apikey     string
-		client     *http.Client
-		mutex      sync.Mutex
+		apikey string
+		client *http.Client
+
 		maxRetries int
 		debug      bool
 	}
@@ -509,9 +511,9 @@ func Test_service_GetModelsByCategoryAndMarkIDWithGroups(t *testing.T) {
 		{
 			name: "Get models by category and mark success AUDI",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     &http.Client{},
-				mutex:      sync.Mutex{},
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: &http.Client{},
+
 				maxRetries: 0,
 			},
 			args: args{
@@ -524,9 +526,9 @@ func Test_service_GetModelsByCategoryAndMarkIDWithGroups(t *testing.T) {
 		{
 			name: "Get models by category and mark success BMW",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     &http.Client{},
-				mutex:      sync.Mutex{},
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: &http.Client{},
+
 				maxRetries: 0,
 			},
 			args: args{
@@ -539,9 +541,9 @@ func Test_service_GetModelsByCategoryAndMarkIDWithGroups(t *testing.T) {
 		{
 			name: "Get models with invalid mark",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     &http.Client{},
-				mutex:      sync.Mutex{},
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: &http.Client{},
+
 				maxRetries: 0,
 			},
 			args: args{
@@ -554,9 +556,9 @@ func Test_service_GetModelsByCategoryAndMarkIDWithGroups(t *testing.T) {
 		{
 			name: "Get models by category and mark fail",
 			fields: fields{
-				apikey:     "123123123",
-				client:     &http.Client{},
-				mutex:      sync.Mutex{},
+				apikey: "123123123",
+				client: &http.Client{},
+
 				maxRetries: 0,
 			},
 			args: args{
@@ -570,9 +572,9 @@ func Test_service_GetModelsByCategoryAndMarkIDWithGroups(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			s := &service{
-				apikey:     tt.fields.apikey,
-				client:     tt.fields.client,
-				mutex:      tt.fields.mutex,
+				apikey: tt.fields.apikey,
+				client: tt.fields.client,
+
 				maxRetries: tt.fields.maxRetries,
 				debug:      tt.fields.debug,
 			}
@@ -587,9 +589,9 @@ func Test_service_GetModelsByCategoryAndMarkIDWithGroups(t *testing.T) {
 
 func Test_service_GetGenerationsByModelID(t *testing.T) {
 	type fields struct {
-		apikey     string
-		client     *http.Client
-		mutex      sync.Mutex
+		apikey string
+		client *http.Client
+
 		maxRetries int
 		debug      bool
 	}
@@ -606,9 +608,9 @@ func Test_service_GetGenerationsByModelID(t *testing.T) {
 		{
 			name: "GetGenerationsByModelID success",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     &http.Client{},
-				mutex:      sync.Mutex{},
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: &http.Client{},
+
 				maxRetries: 3,
 				debug:      false,
 			},
@@ -635,9 +637,9 @@ func Test_service_GetGenerationsByModelID(t *testing.T) {
 		{
 			name: "GetGenerationsByModelID error",
 			fields: fields{
-				apikey:     "apikey",
-				client:     &http.Client{},
-				mutex:      sync.Mutex{},
+				apikey: "apikey",
+				client: &http.Client{},
+
 				maxRetries: 3,
 			},
 			args: args{
@@ -650,9 +652,9 @@ func Test_service_GetGenerationsByModelID(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			s := &service{
-				apikey:     tt.fields.apikey,
-				client:     tt.fields.client,
-				mutex:      tt.fields.mutex,
+				apikey: tt.fields.apikey,
+				client: tt.fields.client,
+
 				maxRetries: tt.fields.maxRetries,
 				debug:      tt.fields.debug,
 			}
@@ -667,9 +669,9 @@ func Test_service_GetGenerationsByModelID(t *testing.T) {
 
 func Test_service_GetModificationsByGenerationID(t *testing.T) {
 	type fields struct {
-		apikey     string
-		client     *http.Client
-		mutex      sync.Mutex
+		apikey string
+		client *http.Client
+
 		maxRetries int
 		debug      bool
 	}
@@ -686,9 +688,9 @@ func Test_service_GetModificationsByGenerationID(t *testing.T) {
 		{
 			name: "GetModificationsByGenerationID success",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     &http.Client{},
-				mutex:      sync.Mutex{},
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: &http.Client{},
+
 				maxRetries: 3,
 			},
 			args: args{
@@ -700,9 +702,9 @@ func Test_service_GetModificationsByGenerationID(t *testing.T) {
 		{
 			name: "GetModificationsByGenerationID error",
 			fields: fields{
-				apikey:     "apikey",
-				client:     &http.Client{},
-				mutex:      sync.Mutex{},
+				apikey: "apikey",
+				client: &http.Client{},
+
 				maxRetries: 3,
 			},
 			args: args{
@@ -715,9 +717,9 @@ func Test_service_GetModificationsByGenerationID(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			s := &service{
-				apikey:     tt.fields.apikey,
-				client:     tt.fields.client,
-				mutex:      tt.fields.mutex,
+				apikey: tt.fields.apikey,
+				client: tt.fields.client,
+
 				maxRetries: tt.fields.maxRetries,
 				debug:      tt.fields.debug,
 			}
@@ -732,9 +734,9 @@ func Test_service_GetModificationsByGenerationID(t *testing.T) {
 
 func Test_service_GetDriverTypes(t *testing.T) {
 	type fields struct {
-		apikey     string
-		client     *http.Client
-		mutex      sync.Mutex
+		apikey string
+		client *http.Client
+
 		maxRetries int
 		debug      bool
 	}
@@ -751,9 +753,9 @@ func Test_service_GetDriverTypes(t *testing.T) {
 		{
 			name: "GetDriverTypes success",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     &http.Client{},
-				mutex:      sync.Mutex{},
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: &http.Client{},
+
 				maxRetries: 3,
 			},
 			args: args{
@@ -766,9 +768,9 @@ func Test_service_GetDriverTypes(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			s := &service{
-				apikey:     tt.fields.apikey,
-				client:     tt.fields.client,
-				mutex:      tt.fields.mutex,
+				apikey: tt.fields.apikey,
+				client: tt.fields.client,
+
 				maxRetries: tt.fields.maxRetries,
 				debug:      tt.fields.debug,
 			}
@@ -783,9 +785,9 @@ func Test_service_GetDriverTypes(t *testing.T) {
 
 func Test_service_GetFuelTypes(t *testing.T) {
 	type fields struct {
-		apikey     string
-		client     *http.Client
-		mutex      sync.Mutex
+		apikey string
+		client *http.Client
+
 		maxRetries int
 		debug      bool
 	}
@@ -798,9 +800,9 @@ func Test_service_GetFuelTypes(t *testing.T) {
 		{
 			name: "GetFuelTypes success",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     &http.Client{},
-				mutex:      sync.Mutex{},
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: &http.Client{},
+
 				maxRetries: 3,
 			},
 			want:    FuelTypes{Base{Name: "Бензин", Value: 1}, Base{Name: "Дизель", Value: 2}, Base{Name: "Газ", Value: 3}, Base{Name: "Газ / Бензин", Value: 4}, Base{Name: "Гібрид", Value: 5}, Base{Name: "Електро", Value: 6}, Base{Name: "Інше", Value: 7}, Base{Name: "Газ метан", Value: 8}, Base{Name: "Газ пропан-бутан", Value: 9}},
@@ -810,14 +812,14 @@ func Test_service_GetFuelTypes(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			s := &service{
-				apikey:     tt.fields.apikey,
-				client:     tt.fields.client,
-				mutex:      tt.fields.mutex,
+				apikey: tt.fields.apikey,
+				client: tt.fields.client,
+
 				maxRetries: tt.fields.maxRetries,
 				debug:      tt.fields.debug,
 			}
 			got, err := s.GetFuelTypes()
-			if !tt.wantErr(t, err, fmt.Sprintf("GetFuelTypes()")) {
+			if !tt.wantErr(t, err, "GetFuelTypes()") {
 				return
 			}
 			assert.Equalf(t, tt.want, got, "GetFuelTypes()")
@@ -827,9 +829,9 @@ func Test_service_GetFuelTypes(t *testing.T) {
 
 func Test_service_GetGearboxTypes(t *testing.T) {
 	type fields struct {
-		apikey     string
-		client     *http.Client
-		mutex      sync.Mutex
+		apikey string
+		client *http.Client
+
 		maxRetries int
 		debug      bool
 	}
@@ -846,9 +848,9 @@ func Test_service_GetGearboxTypes(t *testing.T) {
 		{
 			name: "GetGearboxTypes success",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     &http.Client{},
-				mutex:      sync.Mutex{},
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: &http.Client{},
+
 				maxRetries: 3,
 			},
 			args: args{
@@ -861,9 +863,9 @@ func Test_service_GetGearboxTypes(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			s := &service{
-				apikey:     tt.fields.apikey,
-				client:     tt.fields.client,
-				mutex:      tt.fields.mutex,
+				apikey: tt.fields.apikey,
+				client: tt.fields.client,
+
 				maxRetries: tt.fields.maxRetries,
 				debug:      tt.fields.debug,
 			}
@@ -878,9 +880,9 @@ func Test_service_GetGearboxTypes(t *testing.T) {
 
 func Test_service_GetOptions(t *testing.T) {
 	type fields struct {
-		apikey     string
-		client     *http.Client
-		mutex      sync.Mutex
+		apikey string
+		client *http.Client
+
 		maxRetries int
 		debug      bool
 	}
@@ -897,9 +899,9 @@ func Test_service_GetOptions(t *testing.T) {
 		{
 			name: "GetOptions success",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     &http.Client{},
-				mutex:      sync.Mutex{},
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: &http.Client{},
+
 				maxRetries: 3,
 			},
 			args: args{
@@ -912,9 +914,9 @@ func Test_service_GetOptions(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			s := &service{
-				apikey:     tt.fields.apikey,
-				client:     tt.fields.client,
-				mutex:      tt.fields.mutex,
+				apikey: tt.fields.apikey,
+				client: tt.fields.client,
+
 				maxRetries: tt.fields.maxRetries,
 				debug:      tt.fields.debug,
 			}
@@ -929,9 +931,9 @@ func Test_service_GetOptions(t *testing.T) {
 
 func Test_service_GetColors(t *testing.T) {
 	type fields struct {
-		apikey     string
-		client     *http.Client
-		mutex      sync.Mutex
+		apikey string
+		client *http.Client
+
 		maxRetries int
 		debug      bool
 	}
@@ -944,9 +946,9 @@ func Test_service_GetColors(t *testing.T) {
 		{
 			name: "GetColors success",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     &http.Client{},
-				mutex:      sync.Mutex{},
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: &http.Client{},
+
 				maxRetries: 3,
 			},
 			want:    ColorTypes{Base{Name: "Бежевий", Value: 1}, Base{Name: "Чорний", Value: 2}, Base{Name: "Синій", Value: 3}, Base{Name: "Коричневий", Value: 5}, Base{Name: "Зелений", Value: 7}, Base{Name: "Сірий", Value: 8}, Base{Name: "Помаранчевий", Value: 9}, Base{Name: "Фіолетовий", Value: 12}, Base{Name: "Червоний", Value: 13}, Base{Name: "Білий", Value: 15}, Base{Name: "Жовтий", Value: 16}},
@@ -956,14 +958,14 @@ func Test_service_GetColors(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			s := &service{
-				apikey:     tt.fields.apikey,
-				client:     tt.fields.client,
-				mutex:      tt.fields.mutex,
+				apikey: tt.fields.apikey,
+				client: tt.fields.client,
+
 				maxRetries: tt.fields.maxRetries,
 				debug:      tt.fields.debug,
 			}
 			got, err := s.GetColors()
-			if !tt.wantErr(t, err, fmt.Sprintf("GetColors()")) {
+			if !tt.wantErr(t, err, "GetColors()") {
 				return
 			}
 			assert.Equalf(t, tt.want, got, "GetColors()")
