@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/fairytale5571/go-autoria"
+	"github.com/fairytale5571/autoria"
 )
 
 const (

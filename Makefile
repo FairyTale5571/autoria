@@ -1,4 +1,4 @@
-NAME=go-autoria
+NAME=autoria
 
 # COLORS
 GREEN  := $(shell tput -Txterm setaf 2)

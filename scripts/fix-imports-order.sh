@@ -5,4 +5,4 @@ if ! tool_loc="$(type -p gogroup)" || [[ -z ${tool_loc} ]]; then
       go install github.com/Bubblyworld/gogroup@latest
 fi
 
-gogroup -order std,other,prefix=go-autoria --rewrite $(find . -type f -name "*.go" | grep -v /vendor/ |grep -v /.git/)
+gogroup -order std,other,prefix=autoria --rewrite $(find . -type f -name "*.go" | grep -v /vendor/ |grep -v /.git/)

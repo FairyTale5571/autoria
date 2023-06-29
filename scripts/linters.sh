@@ -4,4 +4,4 @@ echo "golang-ci lint..."
 golangci-lint run ./...
 
 echo "gogroup..."
-gogroup -order std,other,prefix=go-autoria  $(find . -type f -name "*.go" | grep -v "vendor/")
+gogroup -order std,other,prefix=autoria  $(find . -type f -name "*.go" | grep -v "vendor/")

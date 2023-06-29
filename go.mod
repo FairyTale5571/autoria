@@ -1,4 +1,4 @@
-module github.com/fairytale5571/go-autoria
+module github.com/fairytale5571/autoria
 
 go 1.20
 
