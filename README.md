@@ -1,8 +1,7 @@
 # Go AutoRIA
 
-[//]: # ([![Go Reference]&#40;https://pkg.go.dev/badge/github.com/bwmarrin/discordgo.svg&#41;]&#40;https://pkg.go.dev/github.com/bwmarrin/discordgo&#41; )
-[//]: # ([![Go Report Card]&#40;https://goreportcard.com/badge/github.com/bwmarrin/discordgo&#41;]&#40;https://goreportcard.com/report/github.com/bwmarrin/discordgo&#41; )
-[//]: # ([![CI]&#40;https://github.com/bwmarrin/discordgo/actions/workflows/ci.yml/badge.svg&#41;]&#40;https://github.com/bwmarrin/discordgo/actions/workflows/ci.yml&#41;)
+[![Go Reference](https://pkg.go.dev/badge/github.com/fairytale5571/autoria.svg)](https://pkg.go.dev/github.com/fairytale5571/autoria)
+[![Go Report Card](https://goreportcard.com/badge/github.com/fairytale5571/autoria)](https://goreportcard.com/report/github.com/fairytale5571/autoria)
 
 
 ## Бібліотека для використання api auto.ria.com

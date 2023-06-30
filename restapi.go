@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 )
 
@@ -13,7 +12,7 @@ const (
 	APIBaseURL = "https://developers.ria.com"
 )
 
-func (s *service) request(method, path string, params map[string]string, body, response any) error {
+func (s *Service) request(method, path string, params map[string]string, body, response any) error {
 	var buf io.ReadWriter
 	if body != nil {
 		buf = new(bytes.Buffer)
@@ -71,7 +70,7 @@ func (s *service) request(method, path string, params map[string]string, body, r
 
 	if response != nil {
 		if err := json.Unmarshal(responseBody, &response); err != nil {
-			log.Fatal(err)
+			return err
 		}
 	}
 	return nil

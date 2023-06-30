@@ -5,43 +5,28 @@ import (
 	"time"
 )
 
-type Provider interface {
-	GetApiKey() string
-
-	GetCategories() (Categories, error)
-	GetBodyStyles(parentID int) ([]BaseWithParentID, error)
-	GetBodyStylesWithGroups(parentID int) ([][]BaseWithParentID, error)
-	GetMarksByCategory(categoryID int) (Marks, error)
-	GetModelsByCategoryAndMarkID(categoryID, markID int) (Models, error)
-	GetModelsByCategoryAndMarkIDWithGroups(categoryID, markID int) (Models, error)
-	GetGenerationsByModelID(modelID int) ([]Generations, error)
-}
-
-type service struct {
-	client     *http.Client
-	apikey     string
-	maxRetries int
-	debug      bool
+type Service struct {
+	client *http.Client
+	apikey string
+	debug  bool
 }
 
 type Opts struct {
-	APIKey     string
-	MaxRetries int
-	Timeout    time.Duration
-	Debug      bool
+	APIKey  string
+	Debug   bool
+	Timeout time.Duration
 }
 
-func New(opts Opts) Provider {
-	return &service{
+func New(opts Opts) *Service {
+	return &Service{
 		apikey: opts.APIKey,
 		client: &http.Client{
 			Timeout: opts.Timeout,
 		},
-		maxRetries: opts.MaxRetries,
-		debug:      opts.Debug,
+		debug: opts.Debug,
 	}
 }
 
-func (s *service) GetApiKey() string {
+func (s *Service) GetApiKey() string {
 	return s.apikey
 }

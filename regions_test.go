@@ -11,10 +11,9 @@ import (
 
 func Test_service_GetCities(t *testing.T) {
 	type fields struct {
-		client     *http.Client
-		apikey     string
-		maxRetries int
-		debug      bool
+		client *http.Client
+		apikey string
+		debug  bool
 	}
 	type args struct {
 		stateID int
@@ -31,8 +30,6 @@ func Test_service_GetCities(t *testing.T) {
 			fields: fields{
 				apikey: os.Getenv("AUTORIA_API_KEY"),
 				client: http.DefaultClient,
-
-				maxRetries: 0,
 			},
 			args: args{
 				stateID: 1,
@@ -76,8 +73,6 @@ func Test_service_GetCities(t *testing.T) {
 			fields: fields{
 				apikey: "123",
 				client: http.DefaultClient,
-
-				maxRetries: 0,
 			},
 			args: args{
 				stateID: 0,
@@ -88,12 +83,10 @@ func Test_service_GetCities(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &service{
+			s := &Service{
 				apikey: tt.fields.apikey,
 				client: tt.fields.client,
-
-				maxRetries: tt.fields.maxRetries,
-				debug:      tt.fields.debug,
+				debug:  tt.fields.debug,
 			}
 			got, err := s.GetCities(tt.args.stateID)
 			if !tt.wantErr(t, err, fmt.Sprintf("GetCities(%v)", tt.args.stateID)) {
@@ -106,10 +99,10 @@ func Test_service_GetCities(t *testing.T) {
 
 func Test_service_GetStates(t *testing.T) {
 	type fields struct {
-		client     *http.Client
-		apikey     string
-		maxRetries int
-		debug      bool
+		client *http.Client
+		apikey string
+
+		debug bool
 	}
 	tests := []struct {
 		wantErr assert.ErrorAssertionFunc
@@ -122,8 +115,6 @@ func Test_service_GetStates(t *testing.T) {
 			fields: fields{
 				apikey: os.Getenv("AUTORIA_API_KEY"),
 				client: http.DefaultClient,
-
-				maxRetries: 0,
 			},
 			want: States{
 				{Name: "Київська", Value: 10},
@@ -158,8 +149,6 @@ func Test_service_GetStates(t *testing.T) {
 			fields: fields{
 				apikey: "123",
 				client: http.DefaultClient,
-
-				maxRetries: 0,
 			},
 			want:    nil,
 			wantErr: assert.Error,
@@ -167,12 +156,11 @@ func Test_service_GetStates(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &service{
+			s := &Service{
 				apikey: tt.fields.apikey,
 				client: tt.fields.client,
 
-				maxRetries: tt.fields.maxRetries,
-				debug:      tt.fields.debug,
+				debug: tt.fields.debug,
 			}
 			got, err := s.GetStates()
 			if !tt.wantErr(t, err, "GetStates()") {
@@ -185,10 +173,10 @@ func Test_service_GetStates(t *testing.T) {
 
 func Test_service_GetCountries(t *testing.T) {
 	type fields struct {
-		client     *http.Client
-		apikey     string
-		maxRetries int
-		debug      bool
+		client *http.Client
+		apikey string
+
+		debug bool
 	}
 	tests := []struct {
 		wantErr assert.ErrorAssertionFunc
@@ -201,21 +189,18 @@ func Test_service_GetCountries(t *testing.T) {
 			fields: fields{
 				apikey: os.Getenv("AUTORIA_API_KEY"),
 				client: http.DefaultClient,
-
-				maxRetries: 0,
 			},
-			want:    CountryTypes{},
+			want:    CountryTypes{Base{Name: "Австрія", Value: 40}, Base{Name: "Англія", Value: 826}, Base{Name: "Аргентина", Value: 32}, Base{Name: "Бельгія", Value: 56}, Base{Name: "Білорусь", Value: 112}, Base{Name: "Болгарія", Value: 100}, Base{Name: "Бразилія", Value: 76}, Base{Name: "Грузія", Value: 900}, Base{Name: "Данія", Value: 208}, Base{Name: "Естонія", Value: 233}, Base{Name: "Індія", Value: 356}, Base{Name: "Іран", Value: 364}, Base{Name: "Ірландія", Value: 901}, Base{Name: "Ісландія", Value: 903}, Base{Name: "Іспанія", Value: 724}, Base{Name: "Італія", Value: 380}, Base{Name: "Казахстан", Value: 398}, Base{Name: "Канада", Value: 124}, Base{Name: "Китай", Value: 158}, Base{Name: "Корея", Value: 408}, Base{Name: "Латвія", Value: 428}, Base{Name: "Литва", Value: 440}, Base{Name: "Люксембург", Value: 442}, Base{Name: "Малайзія", Value: 458}, Base{Name: "Молдова", Value: 498}, Base{Name: "Нідерланди", Value: 528}, Base{Name: "Німеччина", Value: 276}, Base{Name: "Норвегія", Value: 578}, Base{Name: "ОАЕ", Value: 902}, Base{Name: "Польша", Value: 616}, Base{Name: "Португалiя", Value: 620}, Base{Name: "Росія", Value: 643}, Base{Name: "Румунія", Value: 642}, Base{Name: "Сербія", Value: 688}, Base{Name: "Словаччина", Value: 703}, Base{Name: "Словенія", Value: 705}, Base{Name: "США", Value: 840}, Base{Name: "Туреччина", Value: 792}, Base{Name: "Угорщина", Value: 348}, Base{Name: "Узбекистан", Value: 860}, Base{Name: "Україна", Value: 804}, Base{Name: "Фінляндія", Value: 246}, Base{Name: "Франція", Value: 250}, Base{Name: "Чехія", Value: 203}, Base{Name: "Швейцарія", Value: 756}, Base{Name: "Швеція", Value: 752}, Base{Name: "Японія", Value: 392}},
 			wantErr: assert.NoError,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &service{
+			s := &Service{
 				apikey: tt.fields.apikey,
 				client: tt.fields.client,
 
-				maxRetries: tt.fields.maxRetries,
-				debug:      tt.fields.debug,
+				debug: tt.fields.debug,
 			}
 			got, err := s.GetCountries()
 			if !tt.wantErr(t, err, "GetCountries()") {

@@ -8,7 +8,7 @@ import (
 
 // GetCategories returns all categories
 // Легкові, грузові, причепи і т.д. в массиві
-func (s *service) GetCategories() (Categories, error) {
+func (s *Service) GetCategories() (Categories, error) {
 	var categories Categories
 	if err := s.request(http.MethodGet, "/auto/categories", nil, nil, &categories); err != nil {
 		return nil, err
@@ -18,7 +18,7 @@ func (s *service) GetCategories() (Categories, error) {
 
 // GetBodyStyles returns all body styles for given parentID
 // Example: GetBodyStyles(1) returns all body styles for "Легкові"
-func (s *service) GetBodyStyles(parentID int) ([]BaseWithParentID, error) {
+func (s *Service) GetBodyStyles(parentID int) ([]BaseWithParentID, error) {
 	var bodyStyles []BaseWithParentID
 	if err := s.request(http.MethodGet, fmt.Sprintf("/auto/categories/%d/bodystyles", parentID), nil, nil, &bodyStyles); err != nil {
 		return nil, err
@@ -30,7 +30,7 @@ type ObjectOrArray any
 
 // GetBodyStylesWithGroups returns all body styles for given parentID grouped by type
 // Example: GetBodyStylesWithGroups(1) returns all body styles for "Легкові" grouped by type
-func (s *service) GetBodyStylesWithGroups(parentID int) ([][]BaseWithParentID, error) {
+func (s *Service) GetBodyStylesWithGroups(parentID int) ([][]BaseWithParentID, error) {
 	var raw json.RawMessage
 	if err := s.request(http.MethodGet, fmt.Sprintf("/auto/categories/%d/bodystyles/_group", parentID), nil, nil, &raw); err != nil {
 		return nil, err
@@ -72,7 +72,7 @@ func (s *service) GetBodyStylesWithGroups(parentID int) ([][]BaseWithParentID, e
 
 // GetMarksByCategory returns all marks for given categoryID
 // Example: GetMarksByCategory(1) returns all marks for "Легкові"
-func (s *service) GetMarksByCategory(categoryID int) (Marks, error) {
+func (s *Service) GetMarksByCategory(categoryID int) (Marks, error) {
 	var marks Marks
 	if err := s.request(http.MethodGet, fmt.Sprintf("/auto/categories/%d/marks", categoryID), nil, nil, &marks); err != nil {
 		return nil, err
@@ -82,7 +82,7 @@ func (s *service) GetMarksByCategory(categoryID int) (Marks, error) {
 
 // GetModelsByCategoryAndMarkID returns all models for given categoryID and markID
 // Example: GetModelsByCategoryAndMarkID(1, 1) returns all models for "Легкові" and "Acura"
-func (s *service) GetModelsByCategoryAndMarkID(categoryID, markID int) (Models, error) {
+func (s *Service) GetModelsByCategoryAndMarkID(categoryID, markID int) (Models, error) {
 	var models Models
 	if err := s.request(http.MethodGet, fmt.Sprintf("/auto/categories/%d/marks/%d/models", categoryID, markID), nil, nil, &models); err != nil {
 		return nil, err
@@ -92,7 +92,7 @@ func (s *service) GetModelsByCategoryAndMarkID(categoryID, markID int) (Models, 
 
 // GetModelsByCategoryAndMarkIDWithGroups returns all models for given categoryID and markID grouped by type
 // Example: GetModelsByCategoryAndMarkIDWithGroups(1, 1) returns all models for "Легкові" and "Acura" grouped by type
-func (s *service) GetModelsByCategoryAndMarkIDWithGroups(categoryID, markID int) (Models, error) {
+func (s *Service) GetModelsByCategoryAndMarkIDWithGroups(categoryID, markID int) (Models, error) {
 	var raw json.RawMessage
 	if err := s.request(http.MethodGet, fmt.Sprintf("/auto/categories/%d/marks/%d/models/_group", categoryID, markID), nil, nil, &raw); err != nil {
 		return nil, err
@@ -132,7 +132,7 @@ func (s *service) GetModelsByCategoryAndMarkIDWithGroups(categoryID, markID int)
 	return bodyStyles, nil
 }
 
-func (s *service) GetGenerationsByModelID(modelID int) ([]Generations, error) {
+func (s *Service) GetGenerationsByModelID(modelID int) ([]Generations, error) {
 	var generations []Generations
 	if err := s.request(http.MethodGet, fmt.Sprintf("/generations/by/models/%d/generations", modelID), nil, nil, &generations); err != nil {
 		return nil, err
@@ -142,7 +142,7 @@ func (s *service) GetGenerationsByModelID(modelID int) ([]Generations, error) {
 
 // GetModificationsByGenerationID returns all modifications for given generationID
 // Example: GetModificationsByGenerationID(1) де 1 - це id покоління з слайсу GetGenerationsByModelID
-func (s *service) GetModificationsByGenerationID(generationID int) (Modifications, error) {
+func (s *Service) GetModificationsByGenerationID(generationID int) (Modifications, error) {
 	var modifications Modifications
 	if err := s.request(http.MethodGet, fmt.Sprintf("/modifications/by/generation/%d/modifications", generationID), nil, nil, &modifications); err != nil {
 		return nil, err
@@ -152,7 +152,7 @@ func (s *service) GetModificationsByGenerationID(generationID int) (Modification
 
 // GetDriverTypes returns all driver types
 // Типи приводу
-func (s *service) GetDriverTypes(categoryID int) (DriverTypes, error) {
+func (s *Service) GetDriverTypes(categoryID int) (DriverTypes, error) {
 	var driverTypes DriverTypes
 	if err := s.request(http.MethodGet, fmt.Sprintf("/auto/categories/%d/driverTypes", categoryID), nil, nil, &driverTypes); err != nil {
 		return nil, err
@@ -162,7 +162,7 @@ func (s *service) GetDriverTypes(categoryID int) (DriverTypes, error) {
 
 // GetFuelTypes returns all fuel types
 // Типи палива
-func (s *service) GetFuelTypes() (FuelTypes, error) {
+func (s *Service) GetFuelTypes() (FuelTypes, error) {
 	var fuelTypes FuelTypes
 	if err := s.request(http.MethodGet, "/auto/type", nil, nil, &fuelTypes); err != nil {
 		return nil, err
@@ -172,7 +172,7 @@ func (s *service) GetFuelTypes() (FuelTypes, error) {
 
 // GetGearboxTypes returns all gearbox types
 // Типи коробки передач
-func (s *service) GetGearboxTypes(categoryID int) (GearboxesTypes, error) {
+func (s *Service) GetGearboxTypes(categoryID int) (GearboxesTypes, error) {
 	var gearboxTypes GearboxesTypes
 	if err := s.request(http.MethodGet, fmt.Sprintf("/auto/categories/%d/gearboxes", categoryID), nil, nil, &gearboxTypes); err != nil {
 		return nil, err
@@ -182,7 +182,7 @@ func (s *service) GetGearboxTypes(categoryID int) (GearboxesTypes, error) {
 
 // GetOptions returns all options
 // Опції
-func (s *service) GetOptions(categoryID int) (OptionTypes, error) {
+func (s *Service) GetOptions(categoryID int) (OptionTypes, error) {
 	var options OptionTypes
 	if err := s.request(http.MethodGet, fmt.Sprintf("/auto/categories/%d/options", categoryID), nil, nil, &options); err != nil {
 		return nil, err
@@ -192,7 +192,7 @@ func (s *service) GetOptions(categoryID int) (OptionTypes, error) {
 
 // GetColors returns all colors
 // Кольори
-func (s *service) GetColors() (ColorTypes, error) {
+func (s *Service) GetColors() (ColorTypes, error) {
 	var colors ColorTypes
 	if err := s.request(http.MethodGet, "/auto/colors", nil, nil, &colors); err != nil {
 		return nil, err

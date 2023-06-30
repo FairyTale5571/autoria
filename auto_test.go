@@ -12,9 +12,8 @@ import (
 
 func Test_service_GetCategories(t *testing.T) {
 	type fields struct {
-		client     *http.Client
-		apikey     string
-		maxRetries int
+		client *http.Client
+		apikey string
 	}
 	tests := []struct {
 		name    string
@@ -25,9 +24,8 @@ func Test_service_GetCategories(t *testing.T) {
 		{
 			name: "Get Categories successfully",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     &http.Client{},
-				maxRetries: 0,
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: &http.Client{},
 			},
 			wantErr: false,
 			want: Categories{
@@ -46,24 +44,22 @@ func Test_service_GetCategories(t *testing.T) {
 		{
 			name: "Get Categories successfully",
 			fields: fields{
-				apikey:     "123",
-				client:     &http.Client{},
-				maxRetries: 0,
+				apikey: "123",
+				client: &http.Client{},
 			},
 			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &service{
-				apikey:     tt.fields.apikey,
-				client:     tt.fields.client,
-				maxRetries: tt.fields.maxRetries,
+			s := &Service{
+				apikey: tt.fields.apikey,
+				client: tt.fields.client,
 			}
 			got, err := s.GetCategories()
 			if tt.wantErr {
 				if err == nil {
-					t.Errorf("service.GetCategories() error = %v, wantErr %v", err, tt.wantErr)
+					t.Errorf("Service.GetCategories() error = %v, wantErr %v", err, tt.wantErr)
 				}
 				return
 			}
@@ -75,9 +71,8 @@ func Test_service_GetCategories(t *testing.T) {
 
 func Test_service_GetBodyStyles(t *testing.T) {
 	type fields struct {
-		client     *http.Client
-		apikey     string
-		maxRetries int
+		client *http.Client
+		apikey string
 	}
 	tests := []struct {
 		fields   fields
@@ -89,9 +84,8 @@ func Test_service_GetBodyStyles(t *testing.T) {
 		{
 			name: "Get Body styles successfully",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     &http.Client{},
-				maxRetries: 0,
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: &http.Client{},
 			},
 			want: []BaseWithParentID{
 				{Base: Base{Name: "Седан", Value: 3}, ParentID: 0},
@@ -114,9 +108,8 @@ func Test_service_GetBodyStyles(t *testing.T) {
 		{
 			name: "Unknown parentID",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     &http.Client{},
-				maxRetries: 0,
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: &http.Client{},
 			},
 			want:     []BaseWithParentID{},
 			parentID: 9999999,
@@ -125,24 +118,22 @@ func Test_service_GetBodyStyles(t *testing.T) {
 		{
 			name: "Get Body styles fail",
 			fields: fields{
-				apikey:     "123123123",
-				client:     &http.Client{},
-				maxRetries: 0,
+				apikey: "123123123",
+				client: &http.Client{},
 			},
 			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &service{
-				apikey:     tt.fields.apikey,
-				client:     tt.fields.client,
-				maxRetries: tt.fields.maxRetries,
+			s := &Service{
+				apikey: tt.fields.apikey,
+				client: tt.fields.client,
 			}
 			got, err := s.GetBodyStyles(tt.parentID)
 			if tt.wantErr {
 				if err == nil {
-					t.Errorf("service.GetCategories() error = %v, wantErr %v", err, tt.wantErr)
+					t.Errorf("Service.GetCategories() error = %v, wantErr %v", err, tt.wantErr)
 				}
 				return
 			}
@@ -154,10 +145,10 @@ func Test_service_GetBodyStyles(t *testing.T) {
 
 func Test_service_GetBodyStylesGroups(t *testing.T) {
 	type fields struct {
-		client     *http.Client
-		apikey     string
-		maxRetries int
-		debug      bool
+		client *http.Client
+		apikey string
+
+		debug bool
 	}
 	tests := []struct {
 		name     string
@@ -172,8 +163,7 @@ func Test_service_GetBodyStylesGroups(t *testing.T) {
 				apikey: os.Getenv("AUTORIA_API_KEY"),
 				client: &http.Client{},
 
-				maxRetries: 0,
-				debug:      true,
+				debug: true,
 			},
 			want: [][]BaseWithParentID{
 				{BaseWithParentID{Base: Base{Name: "Седан", Value: 3}, ParentID: 0}},
@@ -199,8 +189,7 @@ func Test_service_GetBodyStylesGroups(t *testing.T) {
 				apikey: os.Getenv("AUTORIA_API_KEY"),
 				client: &http.Client{},
 
-				maxRetries: 0,
-				debug:      true,
+				debug: true,
 			},
 			want: [][]BaseWithParentID{
 				{
@@ -275,8 +264,6 @@ func Test_service_GetBodyStylesGroups(t *testing.T) {
 			fields: fields{
 				apikey: os.Getenv("AUTORIA_API_KEY"),
 				client: &http.Client{},
-
-				maxRetries: 0,
 			},
 			want:     [][]BaseWithParentID(nil),
 			parentID: 9999999,
@@ -287,25 +274,22 @@ func Test_service_GetBodyStylesGroups(t *testing.T) {
 			fields: fields{
 				apikey: "123123123",
 				client: &http.Client{},
-
-				maxRetries: 0,
 			},
 			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &service{
+			s := &Service{
 				apikey: tt.fields.apikey,
 				client: tt.fields.client,
 
-				maxRetries: tt.fields.maxRetries,
-				debug:      tt.fields.debug,
+				debug: tt.fields.debug,
 			}
 			got, err := s.GetBodyStylesWithGroups(tt.parentID)
 			if tt.wantErr {
 				if err == nil {
-					t.Errorf("service.GetCategories() error = %v, wantErr %v", err, tt.wantErr)
+					t.Errorf("Service.GetCategories() error = %v, wantErr %v", err, tt.wantErr)
 				}
 				return
 			}
@@ -317,10 +301,10 @@ func Test_service_GetBodyStylesGroups(t *testing.T) {
 
 func Test_service_GetMarksByCategory(t *testing.T) {
 	type fields struct {
-		client     *http.Client
-		apikey     string
-		maxRetries int
-		debug      bool
+		client *http.Client
+		apikey string
+
+		debug bool
 	}
 	type args struct {
 		categoryID int
@@ -335,9 +319,8 @@ func Test_service_GetMarksByCategory(t *testing.T) {
 		{
 			name: "Get marks by category cars",
 			fields: fields{
-				apikey:     os.Getenv("AUTORIA_API_KEY"),
-				client:     &http.Client{},
-				maxRetries: 0,
+				apikey: os.Getenv("AUTORIA_API_KEY"),
+				client: &http.Client{},
 			},
 			args: args{
 				categoryID: CategoryCars,
@@ -350,8 +333,6 @@ func Test_service_GetMarksByCategory(t *testing.T) {
 			fields: fields{
 				apikey: os.Getenv("AUTORIA_API_KEY"),
 				client: &http.Client{},
-
-				maxRetries: 0,
 			},
 			args: args{
 				categoryID: CategoryMoto,
@@ -364,8 +345,6 @@ func Test_service_GetMarksByCategory(t *testing.T) {
 			fields: fields{
 				apikey: os.Getenv("AUTORIA_API_KEY"),
 				client: &http.Client{},
-
-				maxRetries: 0,
 			},
 			args: args{
 				categoryID: 9999999,
@@ -378,8 +357,6 @@ func Test_service_GetMarksByCategory(t *testing.T) {
 			fields: fields{
 				apikey: "123123123",
 				client: &http.Client{},
-
-				maxRetries: 0,
 			},
 			args: args{
 				categoryID: CategoryMoto,
@@ -390,11 +367,11 @@ func Test_service_GetMarksByCategory(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &service{
-				apikey:     tt.fields.apikey,
-				client:     tt.fields.client,
-				maxRetries: tt.fields.maxRetries,
-				debug:      tt.fields.debug,
+			s := &Service{
+				apikey: tt.fields.apikey,
+				client: tt.fields.client,
+
+				debug: tt.fields.debug,
 			}
 			got, err := s.GetMarksByCategory(tt.args.categoryID)
 			if !tt.wantErr(t, err, ErrInvalidAPIKey) {
@@ -407,10 +384,10 @@ func Test_service_GetMarksByCategory(t *testing.T) {
 
 func Test_service_GetModelsByCategoryAndMarkID(t *testing.T) {
 	type fields struct {
-		client     *http.Client
-		apikey     string
-		maxRetries int
-		debug      bool
+		client *http.Client
+		apikey string
+
+		debug bool
 	}
 	type args struct {
 		categoryID int
@@ -428,8 +405,6 @@ func Test_service_GetModelsByCategoryAndMarkID(t *testing.T) {
 			fields: fields{
 				apikey: os.Getenv("AUTORIA_API_KEY"),
 				client: &http.Client{},
-
-				maxRetries: 0,
 			},
 			args: args{
 				categoryID: CategoryCars,
@@ -443,8 +418,6 @@ func Test_service_GetModelsByCategoryAndMarkID(t *testing.T) {
 			fields: fields{
 				apikey: os.Getenv("AUTORIA_API_KEY"),
 				client: &http.Client{},
-
-				maxRetries: 0,
 			},
 			args: args{
 				categoryID: CategoryCars,
@@ -458,8 +431,6 @@ func Test_service_GetModelsByCategoryAndMarkID(t *testing.T) {
 			fields: fields{
 				apikey: "123123123",
 				client: &http.Client{},
-
-				maxRetries: 0,
 			},
 			args: args{
 				categoryID: CategoryCars,
@@ -471,12 +442,11 @@ func Test_service_GetModelsByCategoryAndMarkID(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &service{
+			s := &Service{
 				apikey: tt.fields.apikey,
 				client: tt.fields.client,
 
-				maxRetries: tt.fields.maxRetries,
-				debug:      tt.fields.debug,
+				debug: tt.fields.debug,
 			}
 			got, err := s.GetModelsByCategoryAndMarkID(tt.args.categoryID, tt.args.markID)
 			if !tt.wantErr(t, err, fmt.Sprintf("GetModelsByCategoryAndMarkID(%v, %v)", tt.args.categoryID, tt.args.markID)) {
@@ -489,10 +459,10 @@ func Test_service_GetModelsByCategoryAndMarkID(t *testing.T) {
 
 func Test_service_GetModelsByCategoryAndMarkIDWithGroups(t *testing.T) {
 	type fields struct {
-		client     *http.Client
-		apikey     string
-		maxRetries int
-		debug      bool
+		client *http.Client
+		apikey string
+
+		debug bool
 	}
 	type args struct {
 		categoryID int
@@ -510,8 +480,6 @@ func Test_service_GetModelsByCategoryAndMarkIDWithGroups(t *testing.T) {
 			fields: fields{
 				apikey: os.Getenv("AUTORIA_API_KEY"),
 				client: &http.Client{},
-
-				maxRetries: 0,
 			},
 			args: args{
 				categoryID: CategoryCars,
@@ -525,8 +493,6 @@ func Test_service_GetModelsByCategoryAndMarkIDWithGroups(t *testing.T) {
 			fields: fields{
 				apikey: os.Getenv("AUTORIA_API_KEY"),
 				client: &http.Client{},
-
-				maxRetries: 0,
 			},
 			args: args{
 				categoryID: CategoryCars,
@@ -540,8 +506,6 @@ func Test_service_GetModelsByCategoryAndMarkIDWithGroups(t *testing.T) {
 			fields: fields{
 				apikey: os.Getenv("AUTORIA_API_KEY"),
 				client: &http.Client{},
-
-				maxRetries: 0,
 			},
 			args: args{
 				categoryID: CategoryCars,
@@ -555,8 +519,6 @@ func Test_service_GetModelsByCategoryAndMarkIDWithGroups(t *testing.T) {
 			fields: fields{
 				apikey: "123123123",
 				client: &http.Client{},
-
-				maxRetries: 0,
 			},
 			args: args{
 				categoryID: CategoryCars,
@@ -568,12 +530,11 @@ func Test_service_GetModelsByCategoryAndMarkIDWithGroups(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &service{
+			s := &Service{
 				apikey: tt.fields.apikey,
 				client: tt.fields.client,
 
-				maxRetries: tt.fields.maxRetries,
-				debug:      tt.fields.debug,
+				debug: tt.fields.debug,
 			}
 			got, err := s.GetModelsByCategoryAndMarkIDWithGroups(tt.args.categoryID, tt.args.markID)
 			if !tt.wantErr(t, err, fmt.Sprintf("GetModelsByCategoryAndMarkIDWithGroups(%v, %v)", tt.args.categoryID, tt.args.markID)) {
@@ -586,10 +547,10 @@ func Test_service_GetModelsByCategoryAndMarkIDWithGroups(t *testing.T) {
 
 func Test_service_GetGenerationsByModelID(t *testing.T) {
 	type fields struct {
-		client     *http.Client
-		apikey     string
-		maxRetries int
-		debug      bool
+		client *http.Client
+		apikey string
+
+		debug bool
 	}
 	type args struct {
 		modelID int
@@ -606,9 +567,7 @@ func Test_service_GetGenerationsByModelID(t *testing.T) {
 			fields: fields{
 				apikey: os.Getenv("AUTORIA_API_KEY"),
 				client: &http.Client{},
-
-				maxRetries: 3,
-				debug:      false,
+				debug:  false,
 			},
 			args: args{
 				modelID: 1653,
@@ -635,8 +594,6 @@ func Test_service_GetGenerationsByModelID(t *testing.T) {
 			fields: fields{
 				apikey: "apikey",
 				client: &http.Client{},
-
-				maxRetries: 3,
 			},
 			args: args{
 				modelID: 1653,
@@ -647,12 +604,11 @@ func Test_service_GetGenerationsByModelID(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &service{
+			s := &Service{
 				apikey: tt.fields.apikey,
 				client: tt.fields.client,
 
-				maxRetries: tt.fields.maxRetries,
-				debug:      tt.fields.debug,
+				debug: tt.fields.debug,
 			}
 			got, err := s.GetGenerationsByModelID(tt.args.modelID)
 			if !tt.wantErr(t, err, fmt.Sprintf("GetGenerationsByModelID(%v)", tt.args.modelID)) {
@@ -665,10 +621,10 @@ func Test_service_GetGenerationsByModelID(t *testing.T) {
 
 func Test_service_GetModificationsByGenerationID(t *testing.T) {
 	type fields struct {
-		client     *http.Client
-		apikey     string
-		maxRetries int
-		debug      bool
+		client *http.Client
+		apikey string
+
+		debug bool
 	}
 	type args struct {
 		generationID int
@@ -685,8 +641,6 @@ func Test_service_GetModificationsByGenerationID(t *testing.T) {
 			fields: fields{
 				apikey: os.Getenv("AUTORIA_API_KEY"),
 				client: &http.Client{},
-
-				maxRetries: 3,
 			},
 			args: args{
 				generationID: 17,
@@ -699,8 +653,6 @@ func Test_service_GetModificationsByGenerationID(t *testing.T) {
 			fields: fields{
 				apikey: "apikey",
 				client: &http.Client{},
-
-				maxRetries: 3,
 			},
 			args: args{
 				generationID: 17,
@@ -711,12 +663,11 @@ func Test_service_GetModificationsByGenerationID(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &service{
+			s := &Service{
 				apikey: tt.fields.apikey,
 				client: tt.fields.client,
 
-				maxRetries: tt.fields.maxRetries,
-				debug:      tt.fields.debug,
+				debug: tt.fields.debug,
 			}
 			got, err := s.GetModificationsByGenerationID(tt.args.generationID)
 			if !tt.wantErr(t, err, fmt.Sprintf("GetModificationsByGenerationID(%v)", tt.args.generationID)) {
@@ -729,10 +680,10 @@ func Test_service_GetModificationsByGenerationID(t *testing.T) {
 
 func Test_service_GetDriverTypes(t *testing.T) {
 	type fields struct {
-		client     *http.Client
-		apikey     string
-		maxRetries int
-		debug      bool
+		client *http.Client
+		apikey string
+
+		debug bool
 	}
 	type args struct {
 		categoryID int
@@ -749,8 +700,6 @@ func Test_service_GetDriverTypes(t *testing.T) {
 			fields: fields{
 				apikey: os.Getenv("AUTORIA_API_KEY"),
 				client: &http.Client{},
-
-				maxRetries: 3,
 			},
 			args: args{
 				categoryID: 1,
@@ -761,12 +710,11 @@ func Test_service_GetDriverTypes(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &service{
+			s := &Service{
 				apikey: tt.fields.apikey,
 				client: tt.fields.client,
 
-				maxRetries: tt.fields.maxRetries,
-				debug:      tt.fields.debug,
+				debug: tt.fields.debug,
 			}
 			got, err := s.GetDriverTypes(tt.args.categoryID)
 			if !tt.wantErr(t, err, fmt.Sprintf("GetDriverTypes(%v)", tt.args.categoryID)) {
@@ -779,10 +727,10 @@ func Test_service_GetDriverTypes(t *testing.T) {
 
 func Test_service_GetFuelTypes(t *testing.T) {
 	type fields struct {
-		client     *http.Client
-		apikey     string
-		maxRetries int
-		debug      bool
+		client *http.Client
+		apikey string
+
+		debug bool
 	}
 	tests := []struct {
 		wantErr assert.ErrorAssertionFunc
@@ -795,8 +743,6 @@ func Test_service_GetFuelTypes(t *testing.T) {
 			fields: fields{
 				apikey: os.Getenv("AUTORIA_API_KEY"),
 				client: &http.Client{},
-
-				maxRetries: 3,
 			},
 			want:    FuelTypes{Base{Name: "Бензин", Value: 1}, Base{Name: "Дизель", Value: 2}, Base{Name: "Газ", Value: 3}, Base{Name: "Газ / Бензин", Value: 4}, Base{Name: "Гібрид", Value: 5}, Base{Name: "Електро", Value: 6}, Base{Name: "Інше", Value: 7}, Base{Name: "Газ метан", Value: 8}, Base{Name: "Газ пропан-бутан", Value: 9}},
 			wantErr: assert.NoError,
@@ -804,12 +750,10 @@ func Test_service_GetFuelTypes(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &service{
+			s := &Service{
 				apikey: tt.fields.apikey,
 				client: tt.fields.client,
-
-				maxRetries: tt.fields.maxRetries,
-				debug:      tt.fields.debug,
+				debug:  tt.fields.debug,
 			}
 			got, err := s.GetFuelTypes()
 			if !tt.wantErr(t, err, "GetFuelTypes()") {
@@ -822,10 +766,10 @@ func Test_service_GetFuelTypes(t *testing.T) {
 
 func Test_service_GetGearboxTypes(t *testing.T) {
 	type fields struct {
-		client     *http.Client
-		apikey     string
-		maxRetries int
-		debug      bool
+		client *http.Client
+		apikey string
+
+		debug bool
 	}
 	type args struct {
 		categoryID int
@@ -842,8 +786,6 @@ func Test_service_GetGearboxTypes(t *testing.T) {
 			fields: fields{
 				apikey: os.Getenv("AUTORIA_API_KEY"),
 				client: &http.Client{},
-
-				maxRetries: 3,
 			},
 			args: args{
 				categoryID: 1,
@@ -854,12 +796,11 @@ func Test_service_GetGearboxTypes(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &service{
+			s := &Service{
 				apikey: tt.fields.apikey,
 				client: tt.fields.client,
 
-				maxRetries: tt.fields.maxRetries,
-				debug:      tt.fields.debug,
+				debug: tt.fields.debug,
 			}
 			got, err := s.GetGearboxTypes(tt.args.categoryID)
 			if !tt.wantErr(t, err, fmt.Sprintf("GetGearboxTypes(%v)", tt.args.categoryID)) {
@@ -872,10 +813,10 @@ func Test_service_GetGearboxTypes(t *testing.T) {
 
 func Test_service_GetOptions(t *testing.T) {
 	type fields struct {
-		client     *http.Client
-		apikey     string
-		maxRetries int
-		debug      bool
+		client *http.Client
+		apikey string
+
+		debug bool
 	}
 	type args struct {
 		categoryID int
@@ -892,8 +833,6 @@ func Test_service_GetOptions(t *testing.T) {
 			fields: fields{
 				apikey: os.Getenv("AUTORIA_API_KEY"),
 				client: &http.Client{},
-
-				maxRetries: 3,
 			},
 			args: args{
 				categoryID: 1,
@@ -904,12 +843,11 @@ func Test_service_GetOptions(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &service{
+			s := &Service{
 				apikey: tt.fields.apikey,
 				client: tt.fields.client,
 
-				maxRetries: tt.fields.maxRetries,
-				debug:      tt.fields.debug,
+				debug: tt.fields.debug,
 			}
 			got, err := s.GetOptions(tt.args.categoryID)
 			if !tt.wantErr(t, err, fmt.Sprintf("GetOptions(%v)", tt.args.categoryID)) {
@@ -922,10 +860,10 @@ func Test_service_GetOptions(t *testing.T) {
 
 func Test_service_GetColors(t *testing.T) {
 	type fields struct {
-		client     *http.Client
-		apikey     string
-		maxRetries int
-		debug      bool
+		client *http.Client
+		apikey string
+
+		debug bool
 	}
 	tests := []struct {
 		wantErr assert.ErrorAssertionFunc
@@ -938,8 +876,6 @@ func Test_service_GetColors(t *testing.T) {
 			fields: fields{
 				apikey: os.Getenv("AUTORIA_API_KEY"),
 				client: &http.Client{},
-
-				maxRetries: 3,
 			},
 			want:    ColorTypes{Base{Name: "Бежевий", Value: 1}, Base{Name: "Чорний", Value: 2}, Base{Name: "Синій", Value: 3}, Base{Name: "Коричневий", Value: 5}, Base{Name: "Зелений", Value: 7}, Base{Name: "Сірий", Value: 8}, Base{Name: "Помаранчевий", Value: 9}, Base{Name: "Фіолетовий", Value: 12}, Base{Name: "Червоний", Value: 13}, Base{Name: "Білий", Value: 15}, Base{Name: "Жовтий", Value: 16}},
 			wantErr: assert.NoError,
@@ -947,12 +883,11 @@ func Test_service_GetColors(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &service{
+			s := &Service{
 				apikey: tt.fields.apikey,
 				client: tt.fields.client,
 
-				maxRetries: tt.fields.maxRetries,
-				debug:      tt.fields.debug,
+				debug: tt.fields.debug,
 			}
 			got, err := s.GetColors()
 			if !tt.wantErr(t, err, "GetColors()") {
